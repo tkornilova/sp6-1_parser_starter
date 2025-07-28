@@ -10,7 +10,7 @@ function parsePage() {
 }
 
 const getMetaData = () => {
-    let metaData = {};
+    const metaData = {};
 
     const title = document.head.querySelector('title').textContent.split('—')[0].trim();
     metaData.title = title;
@@ -39,7 +39,7 @@ const getMetaData = () => {
 }
 
 const getProductData = () => {
-    let productData = {};
+    const productData = {};
 
     const product = document.querySelector('.product');
 
@@ -50,7 +50,7 @@ const getProductData = () => {
     productData.tags = {};
     const tags = product.querySelector('.tags').children;
     [...tags].forEach(tag => {
-        let tagCategory = tag.className;
+        const tagCategory = tag.className;
         if (!productData.tags[tagCategory] && tagCategory === 'green') {
             productData.tags.category = [];
         }  else if (!productData.tags[tagCategory] && tagCategory === 'blue') {
@@ -68,7 +68,7 @@ const getProductData = () => {
         }
     });
 
-    let currencyLabel = [...product.querySelector('.price').firstChild.textContent.trim()][0];
+    const currencyLabel = [...product.querySelector('.price').firstChild.textContent.trim()][0];
     if (currencyLabel === '₽') {
         productData.currency = 'RUB';
     } else if (currencyLabel === '€') {
@@ -124,17 +124,17 @@ const getProductData = () => {
 }
 
 const getSuggestedData = () => {
-    let suggestedData = [];
+    const suggestedData = [];
     const suggestedItems = document.querySelector('.suggested .items').children;
 
     [...suggestedItems].forEach(item => {
-        let itemDescription = {};
+        const itemDescription = {};
 
         itemDescription.name = item.querySelector('h3').textContent;
         itemDescription.description = item.querySelector('p').textContent;
         itemDescription.image = item.querySelector('img').src;
 
-        let currencyLabel = item.querySelector('b').textContent.trim()[0];
+        const currencyLabel = item.querySelector('b').textContent.trim()[0];
         if (currencyLabel === '₽') {
             itemDescription.currency = 'RUB';
         } else if (currencyLabel === '€') {
