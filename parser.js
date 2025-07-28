@@ -5,7 +5,7 @@ function parsePage() {
         meta: getMetaData(),
         product: getProductData(),
         suggested: getSuggestedData(),
-        reviews: []
+        reviews: getReviewData(),
     };
 }
 
@@ -148,6 +148,33 @@ const getSuggestedData = () => {
     });
 
     return suggestedData;
+}
+
+const getReviewData = () => {
+    const reviewData = [];
+
+    const reviews = document.querySelector('.reviews .items').children;
+
+    [...reviews].forEach(review => {
+        const reviewDescription = {}
+
+        let rating = 0;
+        const stars = review.querySelector('.rating').children;
+        if (stars) {
+            [...stars].forEach(star => star.classList.contains('filled') ? rating++ : rating);
+        }
+        reviewDescription.rating = rating;
+
+        reviewDescription.author = {};
+        reviewDescription.author.avatar = review.querySelector('.author img').src;
+        reviewDescription.author.name = review.querySelector('.author span').textContent;
+        reviewDescription.date = review.querySelector('.author i').textContent.replace('/', '.').replace('/', '.');
+        reviewDescription.title = review.querySelector('.title').textContent;
+        reviewDescription.description = review.querySelector('.title').nextElementSibling.textContent;
+
+        reviewData.push(reviewDescription);
+    });
+    return reviewData;
 }
 
 window.parsePage = parsePage;
