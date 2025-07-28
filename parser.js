@@ -4,7 +4,7 @@ function parsePage() {
     return {
         meta: getMetaData(),
         product: getProductData(),
-        suggested: [],
+        suggested: getSuggestedData(),
         reviews: []
     };
 }
@@ -121,6 +121,33 @@ const getProductData = () => {
     });
 
     return productData;
+}
+
+const getSuggestedData = () => {
+    let suggestedData = [];
+    const suggestedItems = document.querySelector('.suggested .items').children;
+
+    [...suggestedItems].forEach(item => {
+        let itemDescription = {};
+
+        itemDescription.name = item.querySelector('h3').textContent;
+        itemDescription.description = item.querySelector('p').textContent;
+        itemDescription.image = item.querySelector('img').src;
+
+        let currencyLabel = item.querySelector('b').textContent.trim()[0];
+        if (currencyLabel === '₽') {
+            itemDescription.currency = 'RUB';
+        } else if (currencyLabel === '€') {
+            itemDescription.currency = 'EUR';
+        } else if (currencyLabel === '$') {
+            itemDescription.currency = 'USD';
+        }
+        itemDescription.price = item.querySelector('b').textContent.trim().replace(currencyLabel, '');
+
+        suggestedData.push(itemDescription);
+    });
+
+    return suggestedData;
 }
 
 window.parsePage = parsePage;
